@@ -1,0 +1,2 @@
+do:
+	python main.py
