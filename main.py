@@ -10,7 +10,7 @@ class App:
         self.offset = 0
 
     def loop(self):
-        updates = self.bot.getUpdates()
+        updates = self.bot.getUpdates(self.offset)
 
         for update in updates:
             # TODO Update user state
@@ -20,7 +20,9 @@ class App:
                 # TODO Create a MVC structure for this user
                 self.ids[userId] = update['message']['chat']['first_name']
             print(self.ids[userId])
-            # TODO Take care of offset
+            
+            # Taking care of offset
+            self.offset = updates[-1]['update_id'] + 1
 
 
 if __name__ == '__main__':
