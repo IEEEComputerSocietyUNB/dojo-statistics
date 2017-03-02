@@ -22,11 +22,21 @@ class Model:
                 rows = list(map(lambda s: s.strip(), line.split(';')))
                 user['id'] = rows[0]
                 user['name'] = rows[1]
-                user['email'] = rows[2]
-                user['origin'] = rows[3]
+                # user['email'] = rows[2]
+                # user['origin'] = rows[3]
                 self.users.append(user)
+
+    def saveData(self):
+        with open('data/ids.csv', 'w') as fp:
+            for user in self.users:
+                fp.write('{0}; {1}\n'.format(user['id'], user['name']))
 
 
     def getIds(self):
         # TODO Get ids
-        return { }
+        return list(map(lambda user: user['id'], self.users))
+
+    def addUser(self, user):
+        if user not in self.users:
+            self.users.append(user)
+            self.saveData()
