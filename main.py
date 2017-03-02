@@ -4,21 +4,31 @@ class App:
     def __init__(self):
         apiCode = input()
         self.bot = telepot.Bot(apiCode)
-
-    def setup(self):
         print('Loading...')
+        # TODO Load stored users
+        self.ids = { }
+        self.offset = 0
 
     def loop(self):
-        print(self.bot.getMe())
-        raise Exception()
+        updates = self.bot.getUpdates()
+
+        for update in updates:
+            # TODO Update user state
+            # TODO Sign attendance
+            userId = update['message']['chat']['id']
+            if userId not in self.ids:
+                # TODO Create a MVC structure for this user
+                self.ids[userId] = update['message']['chat']['first_name']
+            print(self.ids[userId])
+            # TODO Take care of offset
+
 
 if __name__ == '__main__':
     print('---')
     app = App()
-    app.setup()
     while True:
         try:
             app.loop()
-        except:
+        except KeyboardInterrupt:
             print('...')
             break
