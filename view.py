@@ -12,6 +12,7 @@ class View:
         self.NAME_MESSAGE = 'Qual é o seu nome?'
         self.EMAIL_MESSAGE = 'Qual é o seu e-mail?'
         self.ORIGIN_MESSAGE = 'Qual a sua procedência?'
+        self.LOCKED_ATTENDANCE = 'A chamada está indisponível agora!'
 
         self.queries_to_make = [ ]
 

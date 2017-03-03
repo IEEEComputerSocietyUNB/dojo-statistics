@@ -1,4 +1,5 @@
 import os
+import entity
 
 class Model:
     def __init__(self):
@@ -15,6 +16,12 @@ class Model:
         self.users = [ ]
         self.loadData()
         print(self.users)
+        self.admins = set()
+        self.loadAdmins()
+        print(self.admins)
+        self.attendance = entity.Attendance()
+        # Lock attendance
+        self.locked_attendance = True
 
     def loadData(self):
         file_name = 'data/ids.csv'
@@ -29,6 +36,13 @@ class Model:
                     user['origin'] = rows[3]
                     self.users.append(user)
 
+    def loadAdmins(self):
+        file_name = 'data/admins.csv'
+        if os.path.isfile(file_name):
+            with open(file_name, 'r') as fp:
+                for line in fp:
+                    self.admins.add(int(line))
+
     def saveData(self):
         with open('data/ids.csv', 'w') as fp:
             for user in self.users:
@@ -36,8 +50,7 @@ class Model:
                     fp.write('{0}; {1}; {2}; {3}\n'.format(user['id'], user['name'], user['email'], user['origin']))
 
     def getIds(self):
-        # TODO Get ids
-        return list(map(lambda user: user['id'], self.users))
+        return list(map(lambda u: u['id'], self.users))
 
     def addUser(self, user):
         if user not in self.users:
@@ -57,3 +70,6 @@ class Model:
             if chat_id == user['id']:
                 outlet = user
         return outlet
+
+    def signAttendance(self, userId):
+        self.attendance.sign(userId)
