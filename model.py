@@ -2,13 +2,15 @@ import os
 
 class Model:
     def __init__(self):
-        """ This class expects a `ids.csv` file in the data folder which will store the whole
-        bot's data. Each line of this file is expected to follow this pattern:
+        """ This class expects a `ids.csv` file in the data folder which will
+        store the whole bot's data. Each line of this file is expected to follow
+        this pattern:
 
             telegram id; person name; e-mail; origin
 
-        Based off that, we can store the user's data and make sense of it later. The data will
-        be stored on a list called `users`, relating this data on a map. """
+        Based off that, we can store the user's data and make sense of it later.
+        The data will be stored on a list called `users`, relating this
+        data on a map. """
         # TODO Load data
         self.users = [ ]
         try:
@@ -35,7 +37,7 @@ class Model:
         with open('data/ids.csv', 'w') as fp:
             for user in self.users:
                 if 'origin' in user:
-                    fp.write('{0}; {1}; {2}; {3}\n'.format(user['id'], user['name']))
+                    fp.write('{0}; {1}; {2}; {3}\n'.format(user['id'], user['name'], user['email'], user['origin']))
 
 
     def getIds(self):
