@@ -23,6 +23,9 @@ class Model:
         # Lock attendance
         self.locked_attendance = True
 
+    def setController(self, c):
+        self.controller = c
+
     def loadData(self):
         file_name = 'data/ids.csv'
         if os.path.isfile(file_name):
@@ -42,6 +45,18 @@ class Model:
             with open(file_name, 'r') as fp:
                 for line in fp:
                     self.admins.add(int(line))
+
+    def isAdmin(self, userId):
+        return userId in self.admins
+
+    def reactToAdmin(self, update):
+        message = update['message']['text']
+        if message == '/unlock':
+            self.locked_attendance = False
+        elif message == '/lock':
+            self.locked_attendance = True
+        elif message == '/help':
+            self.controller.sendHelp()
 
     def saveData(self):
         with open('data/ids.csv', 'w') as fp:

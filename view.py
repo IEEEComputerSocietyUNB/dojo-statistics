@@ -13,6 +13,9 @@ class View:
         self.EMAIL_MESSAGE = 'Qual é o seu e-mail?'
         self.ORIGIN_MESSAGE = 'Qual a sua procedência?'
         self.LOCKED_ATTENDANCE = 'A chamada está indisponível agora!'
+        self.HELP_MESSAGE = """Comandos de admin:
+- /lock: Trava a lista de presença
+- /unlock: Destrava a lista de presença"""
 
         self.queries_to_make = [ ]
 
