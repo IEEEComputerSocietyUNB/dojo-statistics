@@ -2,10 +2,11 @@ import telepot
 import model
 import view
 import controller
+import sys
 
 class App:
-    def __init__(self):
-        apiCode = input()
+    def __init__(self, api):
+        apiCode = api
         self.bot = telepot.Bot(apiCode)
         print('Loading...')
         self.model = model.Model()
@@ -34,7 +35,8 @@ class App:
         return c
 
 if __name__ == '__main__':
-    app = App()
+    api = sys.argv[1]
+    app = App(api)
     print('---')
     while True:
         try:

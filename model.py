@@ -1,3 +1,5 @@
+import os
+
 class Model:
     def __init__(self):
         """ This class expects a `ids.csv` file in the data folder which will store the whole
@@ -15,7 +17,10 @@ class Model:
             pass
 
     def loadData(self):
-        with open('data/ids.csv', 'r') as fp:
+        file_name = 'data/ids.csv'
+        if not os.path.isfile(file_name):
+            return
+        with open(file_name, 'r') as fp:
             # Lines are expected to follow this pattern:
             for line in fp:
                 user = { }
