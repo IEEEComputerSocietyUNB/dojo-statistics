@@ -22,5 +22,7 @@ class Controller:
             user = self.view.receiveQuery(user, message)
             self.model.addUser(user)
             self.view.sendNextQuery()
+        else:
+            self.view.sendMessage(self.view.SIGNED_MESSAGE)
         # TODO Sign attendance list
         # TODO React to message accordingly, if those are admin messages

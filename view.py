@@ -8,6 +8,11 @@ class View:
         self.id = userId
         self.controller = None
         self.POSSIBLE_QUERIES = ('id', 'name', 'email', 'origin')
+        self.SIGNED_MESSAGE = 'Presença assinada!'
+        self.NAME_MESSAGE = 'Qual é o seu nome?'
+        self.EMAIL_MESSAGE = 'Qual é o seu e-mail?'
+        self.ORIGIN_MESSAGE = 'Qual a sua procedência?'
+
         self.queries_to_make = [ ]
 
     def setController(self, controller):
@@ -40,9 +45,9 @@ class View:
         if len(self.queries_to_make) > 0:
             query = self.queries_to_make[0]
             if query == 'name':
-                message = 'Qual é o seu nome?'
+                message = self.NAME_MESSAGE
             elif query == 'email':
-                message = 'Qual é o seu e-mail?'
+                message = self.EMAIL_MESSAGE
             elif query == 'origin':
-                message = 'Qual a sua procedência?'
+                message = self.ORIGIN_MESSAGE
         self.sendMessage(message)

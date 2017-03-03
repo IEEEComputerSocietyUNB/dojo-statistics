@@ -13,32 +13,27 @@ class Model:
         data on a map. """
         # TODO Load data
         self.users = [ ]
-        try:
-            self.loadData()
-        except FileNotFoundError:
-            pass
+        self.loadData()
+        print(self.users)
 
     def loadData(self):
         file_name = 'data/ids.csv'
-        if not os.path.isfile(file_name):
-            return
-        with open(file_name, 'r') as fp:
-            # Lines are expected to follow this pattern:
-            for line in fp:
-                user = { }
-                rows = list(map(lambda s: s.strip(), line.split(';')))
-                user['id'] = rows[0]
-                user['name'] = rows[1]
-                user['email'] = rows[2]
-                user['origin'] = rows[3]
-                self.users.append(user)
+        if os.path.isfile(file_name):
+            with open(file_name, 'r') as fp:
+                for line in fp:
+                    user = { }
+                    rows = list(map(lambda s: s.strip(), line.split(';')))
+                    user['id'] = int(rows[0])
+                    user['name'] = rows[1]
+                    user['email'] = rows[2]
+                    user['origin'] = rows[3]
+                    self.users.append(user)
 
     def saveData(self):
         with open('data/ids.csv', 'w') as fp:
             for user in self.users:
                 if 'origin' in user:
                     fp.write('{0}; {1}; {2}; {3}\n'.format(user['id'], user['name'], user['email'], user['origin']))
-
 
     def getIds(self):
         # TODO Get ids
@@ -49,7 +44,7 @@ class Model:
             self.users.append(user)
         else:
             for i, u in enumerate(self.users):
-                if u['id'] is user['id']:
+                if u['id'] == user['id']:
                     self.users[i] = user
         if 'origin' in user:
             self.saveData()
@@ -59,6 +54,6 @@ class Model:
         A user is a map relating a Telegram id with a name, an e-mail and their origin."""
         outlet = None
         for user in self.users:
-            if chat_id is user['id']:
+            if chat_id == user['id']:
                 outlet = user
         return outlet
