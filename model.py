@@ -51,7 +51,8 @@ class Model:
             for i, u in enumerate(self.users):
                 if u['id'] is user['id']:
                     self.users[i] = user
-        self.saveData()
+        if 'origin' in user:
+            self.saveData()
 
     def getUser(self, chat_id):
         """Gets the user identified by the given id. If no such user exists, this methods returns None.

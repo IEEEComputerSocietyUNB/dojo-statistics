@@ -10,27 +10,17 @@ class Controller:
         user = self.model.getUser(self.view.id)
         if not user:
             user = { }
-            user['id'] = update['message']['chat']['id']
+            user['id'] = self.view.id
             self.model.addUser(user)
             self.view.setupQuery()
 
     def answer(self, update):
         """This function needs to be rewritten!!!"""
-        # TODO Determine if this user is old or not
-        # TODO Determine if this user is already present or not.
         user = self.model.getUser(self.view.id)
-        # TODO Check if user has already filled the form
-        if user:
-            # TODO Sign attendance
-            # Checking if user needs to save more information
-            if 'origin' not in user:
-                user = self.view.queryInfo(user)
-            self.model.addUser(update, user)
-        # TODO Create a new user when needed
-        else:
-            user = { }
-            user['id'] = update['message']['chat']['id']
+        if self.view.shouldQuery():
+            message = update['message']['text']
+            user = self.view.receiveQuery(user, message)
             self.model.addUser(user)
-            self.view.queryInfo(update, user)
-
+            self.view.sendNextQuery()
+        # TODO Sign attendance list
         # TODO React to message accordingly, if those are admin messages
