@@ -20,24 +20,34 @@ class View:
         self.queries_to_make = [ ]
 
     def setController(self, controller):
+        """Sets the controller for this view."""
         self.controller = controller
-        self.controller.id = self.id
 
     def sendMessage(self, message):
-        """Answers an user message"""
+        """Sends a message"""
         self.bot.sendMessage(self.id, message)
 
-    def queryInfo(self, update, user):
-        # TODO: Discover what is wrong here
-        return user
-
     def setupQuery(self):
+        """Prepares the list of information to be queried by the user. This
+        view expects the query to follow something on these lines:
+
+            def loop(update):
+                if self.view.shouldQuery():
+                    message = update['message']['text']
+                    user = self.view.receiveQuery(user, message)
+                    # Updated user can be used for something
+                    self.view.sendNextQuery()
+
+        Given this function is running on a handle for the specified user
+        on the constructor"""
         self.queries_to_make = list(self.POSSIBLE_QUERIES[:])
 
     def shouldQuery(self):
+        """Check `setupQuery`"""
         return len(self.queries_to_make) is not 0
 
     def receiveQuery(self, user, answer):
+        """Check `setupQuery`"""
         query = self.queries_to_make[0]
         if query != 'id':
             user[query] = answer
@@ -45,7 +55,8 @@ class View:
         return user
 
     def sendNextQuery(self):
-        message = 'Obrigado por preencher os dados!'
+        """Check `setupQuery`"""
+        message = 'Obrigado por preencher os dados! Envie /sign para preencher a presença.'
         if len(self.queries_to_make) > 0:
             query = self.queries_to_make[0]
             if query == 'name':
