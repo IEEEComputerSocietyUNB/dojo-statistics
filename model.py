@@ -51,12 +51,16 @@ class Model:
 
     def reactToAdmin(self, update):
         message = update['message']['text']
+        reaction = None
         if message == '/unlock':
             self.locked_attendance = False
+            reaction = 'Unlocked! :D'
         elif message == '/lock':
             self.locked_attendance = True
+            reaction = 'Locked! :x'
         elif message == '/help':
             self.controller.sendHelp()
+        return reaction
 
     def saveData(self):
         with open('data/ids.csv', 'w') as fp:

@@ -34,7 +34,8 @@ class Controller:
                 self.view.sendMessage(self.view.LOCKED_ATTENDANCE)
         # TODO React to message accordingly, if those are admin messages
         if self.model.isAdmin(self.view.id):
-            self.model.reactToAdmin(update)
+            reaction = self.model.reactToAdmin(update)
+            if reaction: self.view.sendMessage(reaction)
 
     def sendHelp(self):
         self.view.sendMessage(self.view.HELP_MESSAGE)
