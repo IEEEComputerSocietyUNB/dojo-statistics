@@ -25,8 +25,6 @@ class App:
             userId = update['message']['chat']['id']
             if userId not in self.ids:
                 self.ids[userId] = self.generateMVC(userId)
-            # TODO Update user state
-            # TODO Sign attendance
             self.ids[userId].answer(update)
 
             # Taking care of offset

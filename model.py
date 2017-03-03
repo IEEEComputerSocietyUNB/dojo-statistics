@@ -18,10 +18,8 @@ class Model:
         # TODO Load data
         self.users = [ ]
         self.loadData()
-        print(self.users)
         self.admins = set()
         self.loadAdmins()
-        print(self.admins)
         self.attendance = entity.Attendance()
         # Lock attendance
         self.locked_attendance = True

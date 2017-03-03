@@ -6,4 +6,6 @@ Data parser for attendance on dojo sessions.
 
 This app requires [Telepot](https://github.com/nickoala/telepot).
 
-To run it, run `make` on the source folder.
+# Usage
+
+To run it, run the main script and give it as argument the Bot's access token.
