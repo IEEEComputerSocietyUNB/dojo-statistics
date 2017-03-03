@@ -8,9 +8,7 @@ class App:
         apiCode = input()
         self.bot = telepot.Bot(apiCode)
         print('Loading...')
-        # TODO Load stored users
         self.model = model.Model()
-        # TODO Generate MVC structures for each ids
         self.ids = { }
         for userId in self.model.getIds():
             self.ids[userId] = self.generateMVC(userId)
@@ -22,7 +20,6 @@ class App:
         for update in updates:
             userId = update['message']['chat']['id']
             if userId not in self.ids:
-                # TODO Create a MVC structure for this user
                 self.ids[userId] = self.generateMVC(userId)
             # TODO Update user state
             # TODO Sign attendance
@@ -32,13 +29,13 @@ class App:
             self.offset = updates[-1]['update_id'] + 1
 
     def generateMVC(self, userId):
-        v = view.View(self.bot)
+        v = view.View(self.bot, userId)
         c = controller.Controller(self.model, v)
         return c
 
 if __name__ == '__main__':
-    print('---')
     app = App()
+    print('---')
     while True:
         try:
             app.loop()

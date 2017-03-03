@@ -22,14 +22,15 @@ class Model:
                 rows = list(map(lambda s: s.strip(), line.split(';')))
                 user['id'] = rows[0]
                 user['name'] = rows[1]
-                # user['email'] = rows[2]
-                # user['origin'] = rows[3]
+                user['email'] = rows[2]
+                user['origin'] = rows[3]
                 self.users.append(user)
 
     def saveData(self):
         with open('data/ids.csv', 'w') as fp:
             for user in self.users:
-                fp.write('{0}; {1}\n'.format(user['id'], user['name']))
+                if 'origin' in user:
+                    fp.write('{0}; {1}; {2}; {3}\n'.format(user['id'], user['name']))
 
 
     def getIds(self):
@@ -39,4 +40,17 @@ class Model:
     def addUser(self, user):
         if user not in self.users:
             self.users.append(user)
-            self.saveData()
+        else:
+            for i, u in enumerate(self.users):
+                if u['id'] is user['id']:
+                    self.users[i] = user
+        self.saveData()
+
+    def getUser(self, chat_id):
+        """Gets the user identified by the given id. If no such user exists, this methods returns None.
+        A user is a map relating a Telegram id with a name, an e-mail and their origin."""
+        outlet = None
+        for user in self.users:
+            if chat_id is user['id']:
+                outlet = user
+        return outlet
