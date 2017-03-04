@@ -11,7 +11,7 @@ class View:
         self.SIGNED_MESSAGE = 'Presença assinada!'
         self.NAME_MESSAGE = 'Qual é o seu nome?'
         self.EMAIL_MESSAGE = 'Qual é o seu e-mail?'
-        self.ORIGIN_MESSAGE = 'Onde você estuda/trabalha/colabora? (Detalhe o curso caso estude)'
+        self.ORIGIN_MESSAGE = 'Onde você estuda/trabalha/colabora? (Detalhe o curso caso estude ou a comunidade da qual faz parte, ex.: Grupy)'
         self.LOCKED_ATTENDANCE = 'A chamada está indisponível agora!'
         self.HELP_MESSAGE = """Comandos de admin:
 - /lock: Trava a lista de presença
