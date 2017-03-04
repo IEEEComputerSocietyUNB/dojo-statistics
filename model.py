@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import entity
 
@@ -70,7 +71,7 @@ class Model:
 
     def saveData(self):
         """Updates the list with all registered users."""
-        with open('data/ids.csv', 'w') as fp:
+        with open('data/ids.csv', 'w+') as fp:
             for user in self.users:
                 if 'origin' in user:
                     fp.write('{0}; {1}; {2}; {3}\n'.format(user['id'], user['name'], user['email'], user['origin']))

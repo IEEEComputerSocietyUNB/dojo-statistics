@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import time
 import os
 
@@ -24,6 +25,6 @@ class Attendance:
         # Generating list name
         file_name = 'data/{0}.csv'.format(self.today)
         # Storing data
-        with open(file_name, 'w') as fp:
+        with open(file_name, 'w+') as fp:
             for participant in self.participants:
                 fp.write('{0}\n'.format(participant))
