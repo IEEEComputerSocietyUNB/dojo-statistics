@@ -1,1 +1,1 @@
-from attendance import *
+from entity.attendance import *
