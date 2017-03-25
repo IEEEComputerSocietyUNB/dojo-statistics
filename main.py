@@ -22,10 +22,12 @@ class App:
         updates = self.bot.getUpdates(self.offset)
 
         for update in updates:
-            userId = update['message']['chat']['id']
-            if userId not in self.ids:
-                self.ids[userId] = self.generateMVC(userId)
-            self.ids[userId].answer(update)
+            if 'message' in update:
+
+                userId = update['message']['chat']['id']
+                if userId not in self.ids:
+                    self.ids[userId] = self.generateMVC(userId)
+                self.ids[userId].answer(update)
 
             # Taking care of offset
             self.offset = updates[-1]['update_id'] + 1
