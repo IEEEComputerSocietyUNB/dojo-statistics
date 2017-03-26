@@ -9,7 +9,6 @@ class Attendance:
         self.today = time.strftime("%Y%m%d", time.gmtime())
         self.file_name = u'data/{0}.csv'.format(self.today)
         self.participants = [ ]
-        # TODO Try to load today's presence list
         if os.path.isfile(self.file_name):
             with open(self.file_name) as fp:
                 for line in fp:

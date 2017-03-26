@@ -16,6 +16,7 @@ class Model:
         appear on a `admins.csv` file. The model is also responsible for dealing
         with the attendance list, and will store the ids of those who
         participate on that dojo."""
+        # TODO Create separated class for dealing with ids and admin ids
         self.users = [ ]
         self.loadData()
         self.admins = set()
