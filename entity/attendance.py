@@ -8,6 +8,7 @@ class Attendance:
         signing and saving it on memory on a appropriate file."""
         self.today = time.strftime("%Y%m%d", time.gmtime())
         self.participants = [ ]
+        # TODO Try to load today's presence list
 
     def sign(self, userId):
         """Adds another id to the attendance list."""
@@ -25,6 +26,6 @@ class Attendance:
         # Generating list name
         file_name = 'data/{0}.csv'.format(self.today)
         # Storing data
-        with open(file_name, 'w+') as fp:
+        with open(file_name, 'a+') as fp:
             for participant in self.participants:
                 fp.write('{0}\n'.format(participant))

@@ -25,14 +25,12 @@ class Controller:
             self.model.addUser(user)
             self.view.sendNextQuery()
         # Signing attendance list
-        # TODO Turn /sign into the command for signing the attendance list
         else:
             if not self.model.locked_attendance:
                 self.model.signAttendance(self.view.id)
                 self.view.sendMessage(self.view.SIGNED_MESSAGE)
             else:
                 self.view.sendMessage(self.view.LOCKED_ATTENDANCE)
-        # TODO React to message accordingly, if those are admin messages
         if self.model.isAdmin(self.view.id):
             reaction = self.model.reactToAdmin(update)
             if reaction: self.view.sendMessage(reaction)

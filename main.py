@@ -21,9 +21,9 @@ class App:
     def loop(self):
         updates = self.bot.getUpdates(self.offset)
 
+        # Dealing with updates
         for update in updates:
             if 'message' in update:
-
                 userId = update['message']['chat']['id']
                 if userId not in self.ids:
                     self.ids[userId] = self.generateMVC(userId)
