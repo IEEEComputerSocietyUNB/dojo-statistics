@@ -10,8 +10,9 @@ class App:
     users' database file into memory and update their status."""
     def __init__(self, api):
         apiCode = api
-        self.bot = telepot.Bot(apiCode)
         print('Loading...')
+        self.bot = telepot.Bot(apiCode)
+        # self.bot.polling(none_stop = True)
         self.model = model.Model()
         self.ids = { }
         for userId in self.model.getIds():
@@ -47,3 +48,6 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             print('...')
             break
+        except HTTPSConnectionPool:
+            print('--- # Connection lost... restarting')
+            app = App(api)
