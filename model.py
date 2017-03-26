@@ -73,7 +73,7 @@ class Model:
         with open('data/ids.csv', 'w+') as fp:
             for user in self.users:
                 if 'origin' in user:
-                    fp.write('{0}; {1}; {2}; {3}\n'.format(user['id'], user['name'], user['email'], user['origin']))
+                    fp.write(u'{0}; {1}; {2}; {3}\n'.format(user['id'], user['name'], user['email'], user['origin']))
 
     def getIds(self):
         return list(map(lambda u: u['id'], self.users))
