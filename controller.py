@@ -7,23 +7,15 @@ class Controller:
         self.model.setController(self)
         self.view.setController(self)
 
-    def answer(self, update):
-        text = update['message']['text']
+    def tryToUnlock(self, user):
+        answer = 'Not enabled!'
+        if user in self.model.admins:
+            self.model.lockedAttendance = False
+            answer = 'Unlocked! :D'
+        return answer
 
-        if text == '/unlock': # Processando
-            if self.model.isAdmin(self.view.id) and self.model.lockedAttendance:
-                self.model.lockedAttendance = False
-                self.view.sendMessage('Unlocked! :D')
-            else:
-                self.view.sendMessage('what?')
-        else: # Coletando dados
-            if self.model.lockedAttendance:
-                self.view.sendMessage(self.view.LOCKED_ATTENDANCE)
-            elif self.view.thereAreMoreQueries():
-                self.view.sendMessage(self.view.receiveQuery(text))
-            else:
-                self.view.sendMessage(self.view.THANK_YOU)
-
+    def isLocked(self):
+        return self.model.lockedAttendance
 
     def sendHelp(self):
         self.view.sendMessage(self.view.HELP_MESSAGE)

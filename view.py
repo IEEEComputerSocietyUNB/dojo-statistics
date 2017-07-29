@@ -29,18 +29,15 @@ class View:
         """Sends a message"""
         self.bot.sendMessage(self.id, message)
 
-    def thereAreMoreQueries(self):
-        return len(self.queries) > 0
+    def answer(self, update):
+        text = update['message']['text']
+        answer = 'what?'
 
-    def receiveQuery(self, text):
-        answer = self.THANK_YOU
-        if self.thereAreMoreQueries():
-            self.answers.append(text)
-            self.queries = self.queries[1:]
-            currentQuery = self.queries[0]
-            answer = self.ORIGIN_MESSAGE
-            if currentQuery == 'name':
-                answer = self.NAME_MESSAGE
-            elif currentQuery == 'email':
-                answer = self.EMAIL_MESSAGE
-        return answer
+        if text == '/unlock':
+            answer = self.controller.tryToUnlock(self.id)
+        elif text == '/start' and not self.controller.isLocked():
+            answer = self.NAME_MESSAGE
+        else: # Coletando dados
+            answer = self.LOCKED_ATTENDANCE
+
+        self.sendMessage(answer)
