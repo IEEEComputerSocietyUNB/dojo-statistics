@@ -43,7 +43,7 @@ class Model:
 
         # Starting attendance
         self.attendance = entity.Attendance()
-        self.locked_attendance = True
+        self.lockedAttendance = True
 
     def setController(self, c):
         """Sets the controller for this model on a MVC fashion."""

@@ -7,33 +7,23 @@ class Controller:
         self.model.setController(self)
         self.view.setController(self)
 
-        # Verifying user state
-        user = self.model.getUser(self.view.id)
-        if not user:
-            user = { }
-            user['id'] = self.view.id
-            self.model.addUser(user)
-            self.view.setupQuery()
-
     def answer(self, update):
-        """This function coordinate the message flow!"""
-        user = self.model.getUser(self.view.id)
-        # Getting information from users
-        if self.view.shouldQuery():
-            message = update['message']['text']
-            user = self.view.receiveQuery(user, message)
-            self.model.addUser(user)
-            self.view.sendNextQuery()
-        # Signing attendance list
-        else:
-            if not self.model.locked_attendance:
-                self.model.signAttendance(self.view.id)
-                self.view.sendMessage(self.view.SIGNED_MESSAGE)
+        text = update['message']['text']
+
+        if text == '/unlock': # Processando
+            if self.model.isAdmin(self.view.id) and self.model.lockedAttendance:
+                self.model.lockedAttendance = False
+                self.view.sendMessage('Unlocked! :D')
             else:
+                self.view.sendMessage('what?')
+        else: # Coletando dados
+            if self.model.lockedAttendance:
                 self.view.sendMessage(self.view.LOCKED_ATTENDANCE)
-        if self.model.isAdmin(self.view.id):
-            reaction = self.model.reactToAdmin(update)
-            if reaction: self.view.sendMessage(reaction)
+            elif self.view.thereAreMoreQueries():
+                self.view.sendMessage(self.view.receiveQuery(text))
+            else:
+                self.view.sendMessage(self.view.THANK_YOU)
+
 
     def sendHelp(self):
         self.view.sendMessage(self.view.HELP_MESSAGE)
