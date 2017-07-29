@@ -12,7 +12,7 @@ class Attendance:
         if os.path.isfile(self.file_name):
             with open(self.file_name) as fp:
                 for line in fp:
-                    self.participants.append(long(line))
+                    self.participants.append(int(line))
 
     def sign(self, userId):
         """Adds another id to the attendance list."""
