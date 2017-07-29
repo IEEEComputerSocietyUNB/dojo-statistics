@@ -18,7 +18,7 @@ class View:
 - /unlock: Destrava a lista de presença"""
         self.THANK_YOU = 'Obrigado por preencher os dados! Envie /sign para preencher a presença.'
 
-        self.queries = list(self.POSSIBLE_QUERIES[:])
+        self.currentQuestion = 1
         self.answers = [ ]
 
     def setController(self, controller):
@@ -31,13 +31,37 @@ class View:
 
     def answer(self, update):
         text = update['message']['text']
-        answer = 'what?'
+        answer = self.LOCKED_ATTENDANCE
 
         if text == '/unlock':
             answer = self.controller.tryToUnlock(self.id)
-        elif text == '/start' and not self.controller.isLocked():
-            answer = self.NAME_MESSAGE
-        else: # Coletando dados
-            answer = self.LOCKED_ATTENDANCE
+        elif not self.controller.isLocked():
+            if text == '/start':
+                answer = self.NAME_MESSAGE
+                self.currentQuestion += 1
+            elif text == '/sign':
+                if self.currentQuestion >= len(self.POSSIBLE_QUERIES):
+                    self.controller.saveUser(self.getAnswers())
+                    answer = self.SIGNED_MESSAGE
+            else:
+                self.answers.append(text)
+                if self.currentQuestion >= len(self.POSSIBLE_QUERIES):
+                    answer = self.THANK_YOU
+                else:
+                    question = self.POSSIBLE_QUERIES[self.currentQuestion]
+                    if question == 'name':
+                        answer = self.NAME_MESSAGE
+                    elif question == 'email':
+                        answer = self.EMAIL_MESSAGE
+                    elif question == 'origin':
+                        answer = self.ORIGIN_MESSAGE
+                self.currentQuestion += 1
 
         self.sendMessage(answer)
+        return answer
+
+    def getAnswers(self):
+        answers = [self.id]
+        for answer in self.answers:
+            answers.append(answer)
+        return answers

@@ -19,3 +19,10 @@ class Controller:
 
     def sendHelp(self):
         self.view.sendMessage(self.view.HELP_MESSAGE)
+
+    def saveUser(self, answers):
+        queries = list(self.view.POSSIBLE_QUERIES)
+        user = { }
+        for i in range(len(queries)):
+            user[queries[i]] = answers[i]
+        self.model.addUser(user)
