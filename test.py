@@ -3,14 +3,18 @@ import model
 import view
 import controller
 
-class TestJudge(unittest.TestCase):
+class TestModel(unittest.TestCase):
     def setUp(self):
-        self.model = model.Model()
+        self.model = model.Model('data-test')
+
+    def test_can_load_admins(self):
+        self.assertEqual(3, len(self.model.admins))
 
     def test_can_load_ids(self):
         ids = self.model.getIds()
-        self.assertEqual(3, len(ids))
+        self.assertEqual(13, len(ids))
 
+# TODO Implement Controller tests
 
 if __name__ == '__main__':
     unittest.main()

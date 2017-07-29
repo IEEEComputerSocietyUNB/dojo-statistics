@@ -3,7 +3,7 @@ import os
 import entity
 
 class Model:
-    def __init__(self):
+    def __init__(self, src):
         """ This class expects a `ids.csv` file in the data folder which will
         store the participants' data. Each line of this file is expected to
         follow this pattern:
@@ -17,21 +17,11 @@ class Model:
         with the attendance list, and will store the ids of those who
         participate on that dojo."""
         # TODO Create separated class for dealing with ids and admin ids
+        self.src = src
         self.users = [ ]
-        self.loadData()
-        self.admins = set()
-        self.loadAdmins()
-        self.attendance = entity.Attendance()
-        # Lock attendance
-        self.locked_attendance = True
 
-    def setController(self, c):
-        """Sets the controller for this model on a MVC fashion."""
-        self.controller = c
-
-    def loadData(self):
-        """Loads all registered users."""
-        file_name = 'data/ids.csv'
+        # Loading data from all registered users
+        file_name = '{0}/ids.csv'.format(self.src)
         if os.path.isfile(file_name):
             with open(file_name, 'r') as fp:
                 for line in fp:
@@ -43,13 +33,21 @@ class Model:
                     user['origin'] = rows[3]
                     self.users.append(user)
 
-    def loadAdmins(self):
-        """Loads all registered admins."""
-        file_name = 'data/admins.csv'
+        # Loading admins
+        self.admins = set()
+        file_name = '{0}/admins.csv'.format(self.src)
         if os.path.isfile(file_name):
             with open(file_name, 'r') as fp:
                 for line in fp:
                     self.admins.add(int(line))
+
+        # Starting attendance
+        self.attendance = entity.Attendance()
+        self.locked_attendance = True
+
+    def setController(self, c):
+        """Sets the controller for this model on a MVC fashion."""
+        self.controller = c
 
     def isAdmin(self, userId):
         """Checks if a user id is on the VIP list."""
@@ -71,7 +69,7 @@ class Model:
 
     def saveData(self):
         """Updates the list with all registered users."""
-        with open('data/ids.csv', 'w+') as fp:
+        with open('{0}/ids.csv'.format(self.src), 'w+') as fp:
             for user in self.users:
                 if 'origin' in user:
                     fp.write(u'{0}; {1}; {2}; {3}\n'.format(user['id'], user['name'], user['email'], user['origin']))
