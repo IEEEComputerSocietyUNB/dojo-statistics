@@ -94,22 +94,7 @@ class TestMVC(unittest.TestCase):
     def test_can_load_admins(self):
         self.assertEqual(3, len(self.model.admins))
 
-    def test_can_unlock_attendance(self):
-        v1 = view.View(self.bot, 1)
-        v100 = view.View(self.bot, 100)
-        c = controller.Controller(self.model)
-        c.addView(v1)
-        c.addView(v100)
-
-        v1.answer(self.startMessage)
-        self.assertEqual('A chamada está indisponível agora!', self.bot.lastMessages[-1])
-        v100.answer(self.unlockMessage)
-        self.assertEqual('Unlocked! :D', self.bot.lastMessages[-1])
-        v1.answer(self.startMessage)
-        self.assertEqual('Qual é o seu nome?', self.bot.lastMessages[-1])
-
     # TODO Check if help message can be sent
-    # TODO Test if admin can lock attendance list
     # TODO Test if only users that have answered the form can sign the attendance
 
     # TODO Check if data can be saved after the conversation is done
@@ -120,6 +105,8 @@ class TestMVC(unittest.TestCase):
         c.addView(v1)
         c.addView(v100)
 
+        v1.answer(self.startMessage)
+        self.assertEqual('A chamada está indisponível agora!', self.bot.lastMessages[-1])
         v100.answer(self.unlockMessage)
         v1.answer(self.startMessage)
         self.assertEqual('Qual é o seu nome?', self.bot.lastMessages[-1])
@@ -162,15 +149,6 @@ class TestMVC(unittest.TestCase):
         v100.answer(self.lockMessage)
         v2.answer(self.signMessage2)
         self.assertEqual('A chamada está indisponível agora!', self.bot.lastMessages[-1])
-
-    def test_can_sign_after_have_filled_form(self):
-        v2 = view.View(self.bot, 2)
-        v100 = view.View(self.bot, 100)
-        c = controller.Controller(self.model)
-        c.addView(v2)
-        c.addView(v100)
-
-        self.test_can_lock_attendance()
         v100.answer(self.unlockMessage)
         v2.answer(self.signMessage2)
         self.assertEqual('Presença assinada!', self.bot.lastMessages[-1])
