@@ -13,7 +13,8 @@ class App:
         print('Loading...')
         self.bot = telepot.Bot(apiCode)
         # self.bot.polling(none_stop = True)
-        self.model = model.Model()
+        self.model = model.Model('data')
+        self.controller = controller.Controller(self.model)
         self.ids = { }
         for userId in self.model.getIds():
             self.ids[userId] = self.generateMVC(userId)
@@ -35,8 +36,8 @@ class App:
 
     def generateMVC(self, userId):
         v = view.View(self.bot, userId)
-        c = controller.Controller(self.model, v)
-        return c
+        self.controller.addView(v)
+        return v
 
 if __name__ == '__main__':
     api = sys.argv[1]

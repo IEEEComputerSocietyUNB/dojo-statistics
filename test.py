@@ -95,9 +95,7 @@ class TestMVC(unittest.TestCase):
         self.assertEqual(3, len(self.model.admins))
 
     # TODO Check if help message can be sent
-    # TODO Test if only users that have answered the form can sign the attendance
 
-    # TODO Check if data can be saved after the conversation is done
     def test_can_get_all_answers(self):
         v1 = view.View(self.bot, 1)
         v100 = view.View(self.bot, 100)
