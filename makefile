@@ -3,7 +3,7 @@ API?=000
 default: test
 
 do:
-	python main.py $(API)
+	python3 main.py $(API)
 
 test:
-	python test.py
+	python3 test.py
