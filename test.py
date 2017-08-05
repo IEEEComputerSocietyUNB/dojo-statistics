@@ -21,6 +21,12 @@ class TestMVC(unittest.TestCase):
                 'text': '/unlock'
             }
         }
+        self.lockMessage = {
+            'id': 100,
+            'message': {
+                'text': '/lock'
+            }
+        }
         self.startMessage = {
             'id': 1,
             'message': {
@@ -47,6 +53,36 @@ class TestMVC(unittest.TestCase):
         }
         self.signMessage = {
             'id': 1,
+            'message': {
+                'text': '/sign'
+            }
+        }
+        self.startMessage2 = {
+            'id': 2,
+            'message': {
+                'text': '/start'
+            }
+        }
+        self.nameMessage2 = {
+            'id': 2,
+            'message': {
+                'text': 'Fred'
+            }
+        }
+        self.emailMessage2 = {
+            'id': 2,
+            'message': {
+                'text': 'fred@kreuger.org'
+            }
+        }
+        self.originMessage2 = {
+            'id': 2,
+            'message': {
+                'text': 'hell'
+            }
+        }
+        self.signMessage2 = {
+            'id': 2,
             'message': {
                 'text': '/sign'
             }
@@ -101,6 +137,28 @@ class TestMVC(unittest.TestCase):
         v1.answer(self.signMessage)
         self.assertEqual('Presença assinada!', self.bot.lastMessages[-1])
         self.assertTrue(1 in self.model.getIds())
+
+    def test_can_lock_attendance(self):
+        v2 = view.View(self.bot, 2)
+        c2 = controller.Controller(self.model, v2)
+        v100 = view.View(self.bot, 100)
+        c100 = controller.Controller(self.model, v100)
+
+        v100.answer(self.unlockMessage)
+        v2.answer(self.startMessage2)
+        self.assertEqual('Qual é o seu nome?', self.bot.lastMessages[-1])
+        v2.answer(self.nameMessage2)
+        self.assertEqual('Qual é o seu e-mail?', self.bot.lastMessages[-1])
+        v2.answer(self.emailMessage2)
+        self.assertEqual('Onde você estuda/trabalha/colabora? (Detalhe o curso caso estude ou a comunidade da qual faz parte, ex.: Grupy)', self.bot.lastMessages[-1])
+        v2.answer(self.originMessage2)
+        self.assertEqual('Obrigado por preencher os dados! Envie /sign para preencher a presença.', self.bot.lastMessages[-1])
+        v2.answer(self.signMessage2)
+        self.assertEqual('Presença assinada!', self.bot.lastMessages[-1])
+        self.assertTrue(2 in self.model.getIds())
+        v100.answer(self.lockMessage)
+        v2.answer(self.signMessage2)
+        self.assertEqual('A chamada está indisponível agora!', self.bot.lastMessages[-1])
 
 
 class Bot:

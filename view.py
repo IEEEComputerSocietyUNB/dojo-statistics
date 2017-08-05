@@ -35,6 +35,8 @@ class View:
 
         if text == '/unlock':
             answer = self.controller.tryToUnlock(self.id)
+        elif text == '/lock':
+            answer = self.controller.tryToLock(self.id)
         elif not self.controller.isLocked():
             if text == '/start':
                 answer = self.NAME_MESSAGE

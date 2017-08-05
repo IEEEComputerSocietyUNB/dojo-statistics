@@ -14,6 +14,13 @@ class Controller:
             answer = 'Unlocked! :D'
         return answer
 
+    def tryToLock(self, user):
+        answer = 'What are you doing here?'
+        if user in self.model.admins:
+            self.model.lockedAttendance = True
+            answer = 'Locked! :x'
+        return answer
+
     def isLocked(self):
         return self.model.lockedAttendance
 
