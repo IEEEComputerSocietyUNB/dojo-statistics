@@ -3,11 +3,11 @@ import time
 import os
 
 class Attendance:
-    def __init__(self):
+    def __init__(self, where):
         """This class implements the attendance list operations, such as
         signing and saving it on memory on a appropriate file."""
         self.today = time.strftime("%Y%m%d", time.gmtime())
-        self.file_name = u'data/{0}.csv'.format(self.today)
+        self.file_name = u'{1}/{0}.csv'.format(self.today, where)
         self.participants = [ ]
         if os.path.isfile(self.file_name):
             with open(self.file_name) as fp:

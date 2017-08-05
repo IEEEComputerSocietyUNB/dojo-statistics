@@ -71,6 +71,7 @@ class Controller:
             view.leaveFillMode()
         if not view.isInFillMode():
             self.saveUser(view.getAnswers())
+            self.model.signAttendance(view.id)
             return view.SIGNED_MESSAGE
         else:
             return view.ANSWER_EVERYTHING

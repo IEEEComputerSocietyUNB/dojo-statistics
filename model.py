@@ -42,7 +42,7 @@ class Model:
                     self.admins.add(int(line))
 
         # Starting attendance
-        self.attendance = entity.Attendance()
+        self.attendance = entity.Attendance(self.src)
         self.lockedAttendance = True
 
     def setController(self, c):
