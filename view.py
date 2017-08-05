@@ -3,7 +3,7 @@
 class View:
     def __init__(self, bot, userId):
         """This class is responsible for sending and controlling the message
-        flow for a single user. It assumes it is working for a complete user."""
+        flow for a single user."""
         self.bot = bot
         self.id = userId
         self.controller = None
@@ -17,8 +17,9 @@ class View:
 - /lock: Trava a lista de presença
 - /unlock: Destrava a lista de presença"""
         self.THANK_YOU = 'Obrigado por preencher os dados! Envie /sign para preencher a presença.'
+        self.ANSWER_EVERYTHING = 'Responda todo o formulário antes de preencher a chamada!'
 
-        self.currentQuestion = 1
+        self.currentQuestion = 0
         self.answers = [ ]
 
     def setController(self, controller):
@@ -30,6 +31,8 @@ class View:
         self.bot.sendMessage(self.id, message)
 
     def answer(self, update):
+        """Prepares the answer for the bot based upon what the view and the controller
+        can offer here."""
         text = update['message']['text']
         answer = self.LOCKED_ATTENDANCE
 
@@ -38,32 +41,31 @@ class View:
         elif text == '/lock':
             answer = self.controller.tryToLock(self.id)
         elif not self.controller.isLocked():
-            if text == '/start':
-                answer = self.NAME_MESSAGE
-                self.currentQuestion += 1
-            elif text == '/sign':
-                if self.currentQuestion >= len(self.POSSIBLE_QUERIES):
-                    self.controller.saveUser(self.getAnswers())
-                    answer = self.SIGNED_MESSAGE
-            else:
-                self.answers.append(text)
-                if self.currentQuestion >= len(self.POSSIBLE_QUERIES):
-                    answer = self.THANK_YOU
-                else:
-                    question = self.POSSIBLE_QUERIES[self.currentQuestion]
-                    if question == 'name':
-                        answer = self.NAME_MESSAGE
-                    elif question == 'email':
-                        answer = self.EMAIL_MESSAGE
-                    elif question == 'origin':
-                        answer = self.ORIGIN_MESSAGE
-                self.currentQuestion += 1
+            answer = self.controller.deal(self, text)
 
         self.sendMessage(answer)
         return answer
 
     def getAnswers(self):
-        answers = [self.id]
-        for answer in self.answers:
-            answers.append(answer)
-        return answers
+        """Packs the answers given by the user."""
+        return self.answers
+
+    def isInFillMode(self):
+        """Checks if the user still have something to fill in the attendance list."""
+        return self.currentQuestion <= len(self.POSSIBLE_QUERIES)
+
+    def addAnswer(self, answer):
+        """Temporarily store the answer by the user to save later."""
+        self.answers.append(answer)
+
+    def nextQuestion(self):
+        """Goes for the next question."""
+        self.currentQuestion += 1
+
+    def leaveFillMode(self):
+        """Arbitrarily stops filling the attendance list."""
+        self.currentQuestion = 1 + len(self.POSSIBLE_QUERIES)
+
+    def firstQuestion(self):
+        """Sets the current question to the name one."""
+        self.currentQuestion = 1

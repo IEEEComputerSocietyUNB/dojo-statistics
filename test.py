@@ -160,6 +160,17 @@ class TestMVC(unittest.TestCase):
         v2.answer(self.signMessage2)
         self.assertEqual('A chamada está indisponível agora!', self.bot.lastMessages[-1])
 
+    def test_can_sign_after_have_filled_form(self):
+        v2 = view.View(self.bot, 2)
+        c2 = controller.Controller(self.model, v2)
+        v100 = view.View(self.bot, 100)
+        c100 = controller.Controller(self.model, v100)
+
+        self.test_can_lock_attendance()
+        v100.answer(self.unlockMessage)
+        v2.answer(self.signMessage2)
+        self.assertEqual('Presença assinada!', self.bot.lastMessages[-1])
+
 
 class Bot:
     """Mockup class to be used with the View class"""
