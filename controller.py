@@ -1,11 +1,14 @@
 class Controller:
-    def __init__(self, model, view):
+    def __init__(self, model):
         """"The goal of this class is to coordinate the model's and the view's
         efforts, routing the current update to an appropriate action."""
         self.model = model
-        self.view = view
+        self.views = { }
         self.model.setController(self)
-        self.view.setController(self)
+
+    def addView(self, view):
+        self.views[view.id] = view
+        view.setController(self)
 
     # MODEL FUNCTIONS
 
@@ -29,14 +32,10 @@ class Controller:
         """Checks if the attendance list is locked."""
         return self.model.lockedAttendance
 
-    def sendHelp(self):
-        """Sends the help message."""
-        self.view.sendMessage(self.view.HELP_MESSAGE)
-
     def saveUser(self, answers):
         """Saves the answer for the given user. Must be a list as
         described: [int(id), str(name), str(email), str(origin)]."""
-        queries = list(self.view.POSSIBLE_QUERIES)
+        queries = ('id', 'name', 'email', 'origin')
         user = { }
         for i in range(len(queries)):
             user[queries[i]] = answers[i]
@@ -63,7 +62,7 @@ class Controller:
             return view.THANK_YOU
         else:
             view.firstQuestion()
-            return self.fill(view, str(view.id))
+            return self.fill(view, view.id)
 
 
     def sign(self, view):
@@ -91,5 +90,6 @@ class Controller:
             view.nextQuestion()
         else:
             answer = view.THANK_YOU
+            view.leaveFillMode()
 
         return answer

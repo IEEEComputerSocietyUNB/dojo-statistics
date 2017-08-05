@@ -96,9 +96,10 @@ class TestMVC(unittest.TestCase):
 
     def test_can_unlock_attendance(self):
         v1 = view.View(self.bot, 1)
-        c1 = controller.Controller(self.model, v1)
         v100 = view.View(self.bot, 100)
-        c100 = controller.Controller(self.model, v100)
+        c = controller.Controller(self.model)
+        c.addView(v1)
+        c.addView(v100)
 
         v1.answer(self.startMessage)
         self.assertEqual('A chamada está indisponível agora!', self.bot.lastMessages[-1])
@@ -114,9 +115,10 @@ class TestMVC(unittest.TestCase):
     # TODO Check if data can be saved after the conversation is done
     def test_can_get_all_answers(self):
         v1 = view.View(self.bot, 1)
-        c1 = controller.Controller(self.model, v1)
         v100 = view.View(self.bot, 100)
-        c100 = controller.Controller(self.model, v100)
+        c = controller.Controller(self.model)
+        c.addView(v1)
+        c.addView(v100)
 
         v100.answer(self.unlockMessage)
         v1.answer(self.startMessage)
@@ -140,9 +142,10 @@ class TestMVC(unittest.TestCase):
 
     def test_can_lock_attendance(self):
         v2 = view.View(self.bot, 2)
-        c2 = controller.Controller(self.model, v2)
         v100 = view.View(self.bot, 100)
-        c100 = controller.Controller(self.model, v100)
+        c = controller.Controller(self.model)
+        c.addView(v2)
+        c.addView(v100)
 
         v100.answer(self.unlockMessage)
         v2.answer(self.startMessage2)
@@ -162,9 +165,10 @@ class TestMVC(unittest.TestCase):
 
     def test_can_sign_after_have_filled_form(self):
         v2 = view.View(self.bot, 2)
-        c2 = controller.Controller(self.model, v2)
         v100 = view.View(self.bot, 100)
-        c100 = controller.Controller(self.model, v100)
+        c = controller.Controller(self.model)
+        c.addView(v2)
+        c.addView(v100)
 
         self.test_can_lock_attendance()
         v100.answer(self.unlockMessage)
